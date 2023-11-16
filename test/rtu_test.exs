@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.RtuTest do
+defmodule YeicoModbus.RtuTest do
   use ExUnit.Case
-  alias Dpi.Modbus.Rtu
+  alias YeicoModbus.Rtu
 
   test "wrap test" do
     p(<<0xCB, 0x4F>>, <<0x01, 0x05, 0x0B, 0xB8, 0x00, 0x00>>)

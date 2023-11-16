@@ -1,4 +1,4 @@
-defmodule Dpi.Modbus.Transport do
+defmodule YeicoModbus.Transport do
   @moduledoc false
   @callback open(opts :: keyword()) ::
               {:ok, id :: any()} | {:error, reason :: any()}

@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.F15Test do
+defmodule YeicoModbus.F15Test do
   use ExUnit.Case
-  import Dpi.Modbus.TestHelper
+  import YeicoModbus.TestHelper
 
   test "Write 011 to Multiple Coils" do
     model0 = %{

@@ -1,5 +1,5 @@
-defmodule Dpi.Modbus do
-  alias Dpi.Modbus.Conn
+defmodule YeicoModbus do
+  alias YeicoModbus.Conn
 
   def with(key, opts, callback) do
     case get(key) do

@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.FloatTest do
+defmodule YeicoModbus.FloatTest do
   use ExUnit.Case
-  alias Dpi.Modbus.Float
+  alias YeicoModbus.Float
 
   # https://www.h-schmidt.net/FloatConverter/Float.html
   # endianess tested agains opto22 analog modules

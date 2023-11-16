@@ -1,6 +1,5 @@
-defmodule Dpi.Modbus.Crc do
+defmodule YeicoModbus.Crc do
   @moduledoc false
-  use Bitwise
 
   @hi """
       [

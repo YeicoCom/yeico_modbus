@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.Tcp.Transport do
+defmodule YeicoModbus.Tcp.Transport do
   @moduledoc false
-  @behaviour Dpi.Modbus.Transport
+  @behaviour YeicoModbus.Transport
   @to 2000
 
   def open(opts) do
@@ -30,6 +30,6 @@ defmodule Dpi.Modbus.Tcp.Transport do
   end
 
   defp fix_ip(ip) when is_binary(ip), do: ip |> String.to_charlist()
-  defp fix_ip({a, b, c, d}), do: '#{a}.#{b}.#{c}.#{d}'
+  defp fix_ip({a, b, c, d}), do: ~c"#{a}.#{b}.#{c}.#{d}"
   defp fix_ip(ip) when is_list(ip), do: ip
 end

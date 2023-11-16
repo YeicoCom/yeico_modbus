@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.RequestTest do
+defmodule YeicoModbus.RequestTest do
   use ExUnit.Case
-  alias Dpi.Modbus.Request
+  alias YeicoModbus.Request
 
   test "Request pack and parse test" do
     pp(<<0x22, 0x01, 0x23, 0x24, 0x25, 0x26>>, {:rc, 0x22, 0x2324, 0x2526})

@@ -1,6 +1,4 @@
-defmodule Dpi.Modbus.Master do
-  alias Dpi.Modbus
-
+defmodule YeicoModbus.Master do
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts)
   end
@@ -17,7 +15,7 @@ defmodule Dpi.Modbus.Master do
     opts = get(:opts)
 
     result =
-      Modbus.with(:master, opts, fn master ->
+      YeicoModbus.with(:master, opts, fn master ->
         master.(cmd)
       end)
 
@@ -25,7 +23,7 @@ defmodule Dpi.Modbus.Master do
   end
 
   def handle_call(:close, _from, state) do
-    {:reply, Modbus.close(:master), state}
+    {:reply, YeicoModbus.close(:master), state}
   end
 
   defp get(key), do: Process.get({__MODULE__, key})

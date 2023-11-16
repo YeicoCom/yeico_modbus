@@ -1,4 +1,4 @@
-defmodule Dpi.Modbus.Protocol do
+defmodule YeicoModbus.Protocol do
   @moduledoc false
   @callback next(tid :: any()) :: any()
   @callback pack_req(cmd :: tuple(), tid :: any) :: req :: binary()

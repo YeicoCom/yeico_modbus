@@ -1,4 +1,4 @@
-defmodule Dpi.Modbus.Points do
+defmodule YeicoModbus.Points do
   use Agent
 
   def start_link(points \\ []) do

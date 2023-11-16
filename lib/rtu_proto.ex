@@ -1,10 +1,10 @@
-defmodule Dpi.Modbus.Rtu.Protocol do
+defmodule YeicoModbus.Rtu.Protocol do
   @moduledoc false
-  @behaviour Dpi.Modbus.Protocol
+  @behaviour YeicoModbus.Protocol
   alias __MODULE__.Wrapper
-  alias Dpi.Modbus.Request
-  alias Dpi.Modbus.Response
-  alias Dpi.Modbus.Crc
+  alias YeicoModbus.Request
+  alias YeicoModbus.Response
+  alias YeicoModbus.Crc
 
   def next(_) do
   end

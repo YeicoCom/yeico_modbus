@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.F01Test do
+defmodule YeicoModbus.F01Test do
   use ExUnit.Case
-  import Dpi.Modbus.TestHelper
+  import YeicoModbus.TestHelper
 
   test "Read 0 from Single Coil" do
     model0 = %{0x50 => %{{:c, 0x5152} => 0}}

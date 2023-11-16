@@ -1,12 +1,12 @@
-defmodule Dpi.Modbus.Conn do
-  alias Dpi.Modbus.Transport
-  alias Dpi.Modbus.Protocol
+defmodule YeicoModbus.Conn do
+  alias YeicoModbus.Transport
+  alias YeicoModbus.Protocol
 
   @to 2000
 
   def open(opts) do
-    transm = Keyword.get(opts, :trans, Dpi.Modbus.Tcp.Transport)
-    protom = Keyword.get(opts, :proto, Dpi.Modbus.Tcp.Protocol)
+    transm = Keyword.get(opts, :trans, YeicoModbus.Tcp.Transport)
+    protom = Keyword.get(opts, :proto, YeicoModbus.Tcp.Protocol)
     tid = Protocol.next(protom, nil)
 
     case Transport.open(transm, opts) do

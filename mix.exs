@@ -1,9 +1,9 @@
-defmodule Dpi.Modbus.MixProject do
+defmodule YeicoModbus.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :dpi_modbus,
+      app: :yeico_modbus,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,

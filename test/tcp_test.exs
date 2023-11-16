@@ -1,6 +1,6 @@
-defmodule Dpi.Modbus.TcpTest do
+defmodule YeicoModbus.TcpTest do
   use ExUnit.Case
-  alias Dpi.Modbus.Tcp
+  alias YeicoModbus.Tcp
 
   # http://www.tahapaksu.com/crc/
   # https://www.lammertbies.nl/comm/info/crc-calculation.html
@@ -19,7 +19,7 @@ defmodule Dpi.Modbus.TcpTest do
 
   test "transaction id wraps around 0xFFFF" do
     # run with: mix slave
-    alias Dpi.Modbus.Conn
+    alias YeicoModbus.Conn
 
     # start your slave with a shared model
     model = %{0x50 => %{{:c, 0x5152} => 0}}
