@@ -1,9 +1,9 @@
-defmodule YeicoModbus.Tcp.Protocol do
+defmodule Modbus.Tcp.Protocol do
   @moduledoc false
-  @behaviour YeicoModbus.Protocol
+  @behaviour Modbus.Protocol
   alias __MODULE__.Wrapper
-  alias YeicoModbus.Request
-  alias YeicoModbus.Response
+  alias Modbus.Request
+  alias Modbus.Response
   import Bitwise
 
   def next(tid) do

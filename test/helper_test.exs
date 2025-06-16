@@ -1,7 +1,7 @@
-defmodule YeicoModbus.HelperTest do
+defmodule Modbus.HelperTest do
   use ExUnit.Case
-  alias YeicoModbus.Utils
-  alias YeicoModbus.Crc
+  alias Modbus.Utils
+  alias Modbus.Crc
 
   test "bool_to_byte test" do
     assert 0x00 == Utils.bool_to_byte(0)

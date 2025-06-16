@@ -1,4 +1,4 @@
-defmodule YeicoModbus.Utils do
+defmodule Modbus.Utils do
   @moduledoc false
 
   def byte_count(count) do

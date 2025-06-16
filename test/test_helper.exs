@@ -2,7 +2,7 @@ ExUnit.start()
 
 defmodule Shared do
   @moduledoc false
-  alias YeicoModbus.Model
+  alias Modbus.Model
 
   def start_link(model) do
     Agent.start_link(fn -> model end)
@@ -39,15 +39,16 @@ end
 defmodule Slave do
   @moduledoc false
   use GenServer
-  alias YeicoModbus.Transport
-  alias YeicoModbus.Protocol
+  alias Modbus.Transport
+  alias Modbus.Protocol
 
   def start_link(opts) do
-    ip = Keyword.get(opts, :ip, {127, 0, 0, 1})
+    ip = Keyword.get(opts, :ip, "127.0.0.1")
+    ip = if is_binary(ip), do: parse(ip), else: ip
     port = Keyword.get(opts, :port, 0)
     model = Keyword.fetch!(opts, :model)
-    trans = YeicoModbus.Tcp.Transport
-    proto = Keyword.get(opts, :proto, YeicoModbus.Tcp.Protocol)
+    trans = Modbus.Tcp.Transport
+    proto = Keyword.get(opts, :proto, Modbus.Tcp.Protocol)
     init = %{trans: trans, proto: proto, model: model, port: port, ip: ip}
     GenServer.start_link(__MODULE__, init)
   end
@@ -129,16 +130,19 @@ defmodule Slave do
         Process.exit(self(), reason)
     end
   end
+
+  defp parse(ip) do
+    :inet.parse_address(~c"#{ip}") |> elem(1)
+  end
 end
 
-defmodule YeicoModbus.TestHelper do
+defmodule Modbus.TestHelper do
   use ExUnit.Case
-  alias YeicoModbus.Request
-  alias YeicoModbus.Response
-  alias YeicoModbus.Model
-  alias YeicoModbus.Conn
-  alias YeicoModbus.Rtu
-  alias YeicoModbus.Tcp
+  alias Modbus.Request
+  alias Modbus.Response
+  alias Modbus.Model
+  alias Modbus.Rtu
+  alias Modbus.Tcp
 
   def pp1(cmd, req, res, val, model) do
     assert req == Request.pack(cmd)
@@ -164,10 +168,10 @@ defmodule YeicoModbus.TestHelper do
     # conn
     {:ok, slave_pid} = Slave.start_link(model: model)
     port = Slave.port(slave_pid)
-    {:ok, conn_state} = Conn.open(port: port, ip: {127, 0, 0, 1})
+    {:ok, conn_state} = Modbus.open(port: port, ip: "127.0.0.1")
 
     for _ <- 0..10 do
-      {_, {:ok, val2}} = Conn.exec(conn_state, cmd)
+      {:ok, _, val2} = Modbus.exec(conn_state, cmd)
       assert val == val2
     end
   end
@@ -195,10 +199,10 @@ defmodule YeicoModbus.TestHelper do
     # conn
     {:ok, slave_pid} = Slave.start_link(model: model0)
     port = Slave.port(slave_pid)
-    {:ok, conn_state} = Conn.open(port: port, ip: {127, 0, 0, 1})
+    {:ok, conn_state} = Modbus.open(port: port, ip: "127.0.0.1")
 
     for _ <- 0..10 do
-      {_, :ok} = Conn.exec(conn_state, cmd)
+      {:ok, _} = Modbus.exec(conn_state, cmd)
     end
   end
 end

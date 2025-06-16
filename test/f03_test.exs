@@ -1,6 +1,6 @@
-defmodule YeicoModbus.F03Test do
+defmodule Modbus.F03Test do
   use ExUnit.Case
-  import YeicoModbus.TestHelper
+  import Modbus.TestHelper
 
   test "Read 0x6162 from Single Holding Register" do
     model0 = %{0x50 => %{{:hr, 0x5152} => 0x6162}}

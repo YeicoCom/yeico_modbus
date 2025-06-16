@@ -1,10 +1,11 @@
-defmodule YeicoModbus.Tcp.Transport do
+defmodule Modbus.Tcp.Transport do
   @moduledoc false
-  @behaviour YeicoModbus.Transport
+  @behaviour Modbus.Transport
   @to 2000
 
   def open(opts) do
-    ip = Keyword.fetch!(opts, :ip) |> fix_ip()
+    ip = Keyword.fetch!(opts, :ip)
+    ip = if is_binary(ip), do: parse(ip), else: ip
     port = Keyword.fetch!(opts, :port)
     timeout = Keyword.get(opts, :timeout, @to)
     opts = [:binary, packet: :raw, active: false]
@@ -29,7 +30,7 @@ defmodule YeicoModbus.Tcp.Transport do
     :gen_tcp.close(socket)
   end
 
-  defp fix_ip(ip) when is_binary(ip), do: ip |> String.to_charlist()
-  defp fix_ip({a, b, c, d}), do: ~c"#{a}.#{b}.#{c}.#{d}"
-  defp fix_ip(ip) when is_list(ip), do: ip
+  defp parse(ip) do
+    :inet.parse_address(~c"#{ip}") |> elem(1)
+  end
 end

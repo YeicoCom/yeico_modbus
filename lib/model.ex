@@ -1,4 +1,4 @@
-defmodule YeicoModbus.Model do
+defmodule Modbus.Model do
   @moduledoc false
 
   def apply(state, {:rc, slave, address, count}) when is_integer(address) and is_integer(count) do
@@ -87,6 +87,7 @@ defmodule YeicoModbus.Model do
     end
   end
 
+  # for testing
   def check_request(state, {slave, type, addr, count}) do
     map = Map.get(state, slave)
 

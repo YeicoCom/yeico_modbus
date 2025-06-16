@@ -1,6 +1,6 @@
-defmodule YeicoModbus.Response do
+defmodule Modbus.Response do
   @moduledoc false
-  alias YeicoModbus.Utils
+  alias Modbus.Utils
 
   def pack({:rc, slave, _address, count}, values) do
     ^count = Enum.count(values)

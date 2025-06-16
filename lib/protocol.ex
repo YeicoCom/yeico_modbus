@@ -1,4 +1,4 @@
-defmodule YeicoModbus.Protocol do
+defmodule Modbus.Protocol do
   @moduledoc false
   @callback next(tid :: any()) :: any()
   @callback pack_req(cmd :: tuple(), tid :: any) :: req :: binary()

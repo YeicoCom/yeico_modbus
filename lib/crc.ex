@@ -1,4 +1,4 @@
-defmodule YeicoModbus.Crc do
+defmodule Modbus.Crc do
   @moduledoc false
 
   @hi """

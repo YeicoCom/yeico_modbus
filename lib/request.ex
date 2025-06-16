@@ -1,6 +1,6 @@
-defmodule YeicoModbus.Request do
+defmodule Modbus.Request do
   @moduledoc false
-  alias YeicoModbus.Utils
+  alias Modbus.Utils
 
   def pack({:rc, slave, address, count}) do
     reads(:d, slave, 1, address, count)

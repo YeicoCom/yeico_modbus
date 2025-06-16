@@ -1,6 +1,6 @@
-defmodule YeicoModbus.F16Test do
+defmodule Modbus.F16Test do
   use ExUnit.Case
-  import YeicoModbus.TestHelper
+  import Modbus.TestHelper
 
   test "Write 0x616263646566 to Multiple Holding Registers" do
     model0 = %{

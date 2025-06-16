@@ -1,4 +1,4 @@
-defmodule YeicoModbus.Float do
+defmodule Modbus.Float do
   # https://www.h-schmidt.net/FloatConverter/Float.html.
   def from_be(list_of_regs), do: from(list_of_regs, :be)
 

@@ -1,6 +1,6 @@
-defmodule YeicoModbus.TcpTest do
+defmodule Modbus.TcpTest do
   use ExUnit.Case
-  alias YeicoModbus.Tcp
+  alias Modbus.Tcp
 
   # http://www.tahapaksu.com/crc/
   # https://www.lammertbies.nl/comm/info/crc-calculation.html
@@ -19,7 +19,6 @@ defmodule YeicoModbus.TcpTest do
 
   test "transaction id wraps around 0xFFFF" do
     # run with: mix slave
-    alias YeicoModbus.Conn
 
     # start your slave with a shared model
     model = %{0x50 => %{{:c, 0x5152} => 0}}
@@ -29,20 +28,20 @@ defmodule YeicoModbus.TcpTest do
     port = Slave.port(slave)
 
     # interact with it
-    {:ok, conn} = Conn.open(ip: {127, 0, 0, 1}, port: port)
+    {:ok, conn} = Modbus.open(ip: "127.0.0.1", port: port)
     ini = 0xFFF0
-    conn = Conn.put_tid(conn, ini)
+    conn = Modbus.tid(conn, ini)
 
     conn =
       for tid <- ini..(ini + 0x10), reduce: conn do
         conn ->
           tid = Bitwise.band(tid, 0xFFFF)
-          assert tid == Conn.get_tid(conn)
-          {conn, :ok} = Conn.exec(conn, {:fc, 0x50, 0x5152, 0})
+          assert tid == Modbus.tid(conn)
+          {:ok, conn} = Modbus.exec(conn, {:fc, 0x50, 0x5152, 0})
           conn
       end
 
-    :ok = Conn.close(conn)
+    :ok = Modbus.close(conn)
     :ok = Slave.stop(slave)
   end
 end
