@@ -29,17 +29,14 @@ defmodule Modbus do
     with {:ok, request, length} <- request(proto, cmd, tid),
          :ok <- Transport.write(trans, request),
          {:ok, resp} <- Transport.readn(trans, length, timeout) do
-      try do
-        case Protocol.parse_res(proto, cmd, resp, tid) do
-          nil -> {:ok, conn}
-          values -> {:ok, conn, values}
-        end
-      rescue
-        _ -> {:error, conn, {:invalid, cmd: cmd, resp: resp}}
+      case parse(proto, cmd, resp, tid) do
+        {:error, error} -> {:error, conn, error}
+        nil -> {:ok, conn}
+        values -> {:ok, conn, values}
       end
     else
-      {:error, reason} ->
-        {:error, conn, reason}
+      {:error, error} ->
+        {:error, conn, error}
     end
   end
 
@@ -50,7 +47,15 @@ defmodule Modbus do
       {:ok, request, length}
     rescue
       _ ->
-        {:error, {:invalid, cmd: cmd}}
+        {:error, {:request, cmd: cmd, tid: tid}}
+    end
+  end
+
+  defp parse(proto, cmd, resp, tid) do
+    try do
+      Protocol.parse_res(proto, cmd, resp, tid)
+    rescue
+      _ -> {:error, {:parse, cmd: cmd, tid: tid, resp: resp}}
     end
   end
 
