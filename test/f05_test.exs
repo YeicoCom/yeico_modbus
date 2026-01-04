@@ -1,6 +1,6 @@
 defmodule Modbus.F05Test do
   use ExUnit.Case
-  import Modbus.TestHelper
+  import TestHelper
 
   test "Write 0 to Single Coil" do
     model0 = %{0x50 => %{{:c, 0x5152} => 1}}

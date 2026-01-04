@@ -1,6 +1,6 @@
 defmodule Modbus.RequestTest do
   use ExUnit.Case
-  alias Modbus.Request
+  import Modbus
 
   test "Request pack and parse test" do
     pp(<<0x22, 0x01, 0x23, 0x24, 0x25, 0x26>>, {:rc, 0x22, 0x2324, 0x2526})
@@ -46,15 +46,15 @@ defmodule Modbus.RequestTest do
 
     # invalid cases
     assert <<0x22, 0x0F, 0x23, 0x24, 0x07, 0xF9, 0x00>> <> l2b1(bls(2041)) ==
-             Request.pack({:fc, 0x22, 0x2324, bls(2041)})
+             request({:pack, {:fc, 0x22, 0x2324, bls(2041)}})
 
     assert <<0x22, 0x10, 0x23, 0x24, 0x00, 0x80, 0x00>> <> l2b16(rls(128)) ==
-             Request.pack({:phr, 0x22, 0x2324, rls(128)})
+             request({:pack, {:phr, 0x22, 0x2324, rls(128)}})
   end
 
   defp pp(packet, cmd) do
-    assert packet == Request.pack(cmd)
-    assert cmd == Request.parse(packet)
+    assert packet == request({:pack, cmd})
+    assert cmd == request({:parse, packet})
   end
 
   defp bls(size) do

@@ -1,6 +1,6 @@
 defmodule Modbus.TcpTest do
   use ExUnit.Case
-  alias Modbus.Tcp
+  import Modbus
 
   # http://www.tahapaksu.com/crc/
   # https://www.lammertbies.nl/comm/info/crc-calculation.html
@@ -13,8 +13,8 @@ defmodule Modbus.TcpTest do
   end
 
   defp p(transid, payload, packet) do
-    assert packet == payload |> Tcp.Protocol.Wrapper.wrap(transid)
-    assert {payload, transid} == packet |> Tcp.Protocol.Wrapper.unwrap()
+    assert packet == payload |> tcp_wrap(transid)
+    assert {payload, transid} == packet |> tcp_unwrap()
   end
 
   test "transaction id wraps around 0xFFFF" do
@@ -28,20 +28,20 @@ defmodule Modbus.TcpTest do
     port = Slave.port(slave)
 
     # interact with it
-    {:ok, conn} = Modbus.open(ip: "127.0.0.1", port: port)
-    ini = 0xFFF0
-    conn = Modbus.tid(conn, ini)
+    {:ok, conn} = modbus({:open, ip: "127.0.0.1", port: port})
+    ini = 0xFFF8
+    conn = modbus({:tid, conn, ini})
 
     conn =
       for tid <- ini..(ini + 0x10), reduce: conn do
         conn ->
-          tid = Bitwise.band(tid, 0xFFFF)
-          assert tid == Modbus.tid(conn)
-          {:ok, conn} = Modbus.exec(conn, {:fc, 0x50, 0x5152, 0})
+          wtid = Bitwise.band(tid, 0xFFFF)
+          assert wtid == modbus({:tid, conn})
+          {:ok, conn} = modbus({:exec, conn, {:fc, 0x50, 0x5152, 0}, 4000})
           conn
       end
 
-    :ok = Modbus.close(conn)
+    :ok = modbus({:close, conn})
     :ok = Slave.stop(slave)
   end
 end

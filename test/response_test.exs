@@ -1,6 +1,6 @@
 defmodule Modbus.ResponseTest do
   use ExUnit.Case
-  alias Modbus.Response
+  import Modbus
 
   test "Response pack and parse test" do
     pp(<<0x22, 0x01, 0x01, 0x00>>, {:rc, 0x22, 0x2324, 1}, [0])
@@ -105,22 +105,22 @@ defmodule Modbus.ResponseTest do
     pp(<<0x22, 0x04, 0xFE>> <> l2b16(rls(127)), {:rir, 0x22, 0x2324, 127}, rls(127))
     # invalid cases
     assert <<0x22, 0x01, 0x00>> <> l2b1(bls(2041)) ==
-             Response.pack({:rc, 0x22, 0x2324, 2041}, bls(2041))
+             response({:pack, {:rc, 0x22, 0x2324, 2041}, bls(2041)})
 
     assert <<0x22, 0x02, 0x00>> <> l2b1(bls(2041)) ==
-             Response.pack({:ri, 0x22, 0x2324, 2041}, bls(2041))
+             response({:pack, {:ri, 0x22, 0x2324, 2041}, bls(2041)})
 
     assert <<0x22, 0x03, 0x00>> <> l2b16(rls(128)) ==
-             Response.pack({:rhr, 0x22, 0x2324, 128}, rls(128))
+             response({:pack, {:rhr, 0x22, 0x2324, 128}, rls(128)})
 
     assert <<0x22, 0x04, 0x00>> <> l2b16(rls(128)) ==
-             Response.pack({:rir, 0x22, 0x2324, 128}, rls(128))
+             response({:pack, {:rir, 0x22, 0x2324, 128}, rls(128)})
   end
 
   defp pp(packet, cmd, vals) do
-    assert packet == Response.pack(cmd, vals)
-    assert Response.length(cmd) == byte_size(packet)
-    assert vals == Response.parse(cmd, packet)
+    assert packet == response({:pack, cmd, vals})
+    assert response({:length, cmd}) == byte_size(packet)
+    assert vals == response({:parse, cmd, packet})
   end
 
   defp bls(size) do

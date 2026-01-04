@@ -1,6 +1,6 @@
 defmodule Modbus.F16Test do
   use ExUnit.Case
-  import Modbus.TestHelper
+  import TestHelper
 
   test "Write 0x616263646566 to Multiple Holding Registers" do
     model0 = %{
