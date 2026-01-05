@@ -560,7 +560,7 @@ model = fn
     model_p.({model_p, :check_request, state, {slave, type, addr, count}})
 end
 
-modbus_p = fn
+master_p = fn
   {:request, proto, cmd, tid} ->
     try do
       request = proto.({:pack_req, cmd, tid})
@@ -579,7 +579,7 @@ modbus_p = fn
     end
 end
 
-modbus = fn
+master = fn
   {:open, opts} ->
     proto = Keyword.get(opts, :proto, tcp_proto)
     trans = Keyword.get(opts, :trans, tcp_trans)
@@ -600,10 +600,10 @@ modbus = fn
   when is_integer(timeout) ->
     conn = Map.put(conn, :tid, proto.({:next, tid}))
 
-    with {:ok, request, length} <- modbus_p.({:request, proto, cmd, tid}),
+    with {:ok, request, length} <- master_p.({:request, proto, cmd, tid}),
          :ok <- trans.({:write, tstate, request}),
          {:ok, resp} <- trans.({:readn, tstate, length, timeout}) do
-      case modbus_p.({:parse, proto, cmd, resp, tid}) do
+      case master_p.({:parse, proto, cmd, resp, tid}) do
         {:error, error} -> {:error, conn, error}
         nil -> {:ok, conn}
         values -> {:ok, conn, values}
@@ -624,7 +624,7 @@ end
 %{
   float: float,
   model: model,
-  modbus: modbus,
+  master: master,
   rtu_proto: rtu_proto,
   tcp_proto: tcp_proto,
   tcp_trans: tcp_trans

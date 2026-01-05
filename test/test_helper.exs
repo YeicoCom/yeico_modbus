@@ -11,7 +11,7 @@ defmodule Modbus do
   end
 
   def crc(arg), do: get(:crc).(arg)
-  def modbus(arg), do: get(:modbus).(arg)
+  def master(arg), do: get(:master).(arg)
   def float(arg), do: get(:float).(arg)
   def request(arg), do: get(:request).(arg)
   def response(arg), do: get(:response).(arg)
@@ -209,10 +209,10 @@ defmodule TestHelper do
     # conn
     {:ok, pid} = Slave.start_link(model: model)
     port = Slave.port(pid)
-    {:ok, conn} = modbus({:open, port: port, ip: "127.0.0.1"})
+    {:ok, conn} = master({:open, port: port, ip: "127.0.0.1"})
 
     for _ <- 0..10 do
-      {:ok, _, val2} = modbus({:exec, conn, cmd, 4000})
+      {:ok, _, val2} = master({:exec, conn, cmd, 4000})
       assert val == val2
     end
   end
@@ -240,10 +240,10 @@ defmodule TestHelper do
     # conn
     {:ok, pid} = Slave.start_link(model: model0)
     port = Slave.port(pid)
-    {:ok, conn} = modbus({:open, port: port, ip: "127.0.0.1"})
+    {:ok, conn} = master({:open, port: port, ip: "127.0.0.1"})
 
     for _ <- 0..10 do
-      {:ok, _} = modbus({:exec, conn, cmd, 4000})
+      {:ok, _} = master({:exec, conn, cmd, 4000})
     end
   end
 end

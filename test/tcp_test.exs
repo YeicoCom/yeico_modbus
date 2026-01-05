@@ -28,20 +28,20 @@ defmodule Modbus.TcpTest do
     port = Slave.port(slave)
 
     # interact with it
-    {:ok, conn} = modbus({:open, ip: "127.0.0.1", port: port})
+    {:ok, conn} = master({:open, ip: "127.0.0.1", port: port})
     ini = 0xFFF8
-    conn = modbus({:tid, conn, ini})
+    conn = master({:tid, conn, ini})
 
     conn =
       for tid <- ini..(ini + 0x10), reduce: conn do
         conn ->
           wtid = Bitwise.band(tid, 0xFFFF)
-          assert wtid == modbus({:tid, conn})
-          {:ok, conn} = modbus({:exec, conn, {:fc, 0x50, 0x5152, 0}, 4000})
+          assert wtid == master({:tid, conn})
+          {:ok, conn} = master({:exec, conn, {:fc, 0x50, 0x5152, 0}, 4000})
           conn
       end
 
-    :ok = modbus({:close, conn})
+    :ok = master({:close, conn})
     :ok = Slave.stop(slave)
   end
 end
