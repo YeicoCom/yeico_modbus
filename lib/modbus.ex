@@ -596,8 +596,8 @@ master = fn
   {:close, %{trans: trans, tstate: tstate}} ->
     trans.({:close, tstate})
 
-  {:exec, conn = %{trans: trans, proto: proto, tid: tid, tstate: tstate}, cmd, timeout}
-  when is_integer(timeout) ->
+  {:exec, conn = %{trans: trans, proto: proto, tid: tid, tstate: tstate}, cmd, timeout} ->
+    timeout = timeout || toms
     conn = Map.put(conn, :tid, proto.({:next, tid}))
 
     with {:ok, request, length} <- master_p.({:request, proto, cmd, tid}),
